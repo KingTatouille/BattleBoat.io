@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Jeu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar">
+            <a href="#" class="logo">Mon Jeu</a>
+            <ul class="nav-links">
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Jouer</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="container">
+            <h1>Bienvenue dans Mon Jeu !</h1>
+            <p>Entrez votre pseudo pour commencer à jouer :</p>
+            <form id="nameForm">
+                <input type="text" id="nameInput" name="pseudo" placeholder="Votre pseudo" required>
+                <button type="submit" id="startButton">Commencer à jouer</button>
+            </form>
+        </div>
+    </section>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
