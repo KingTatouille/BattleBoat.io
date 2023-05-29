@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Bienvenue à BattleBoat.io !</h1>
+        <p>
+            BattleBoat.io est un jeu passionnant où vous pouvez tester vos compétences en stratégie 
+            contre des joueurs du monde entier. Entrez simplement votre pseudo pour commencer à jouer.
+        </p>
+        <form action="{{ path('game_start') }}" method="post">
+            <input type="text" id="pseudo" name="pseudo" placeholder="Entrer votre pseudo" required>
+            <button type="submit" class="btn btn-primary">Commencer à jouer</button>
+        </form>
+
+        <h2>Meilleurs scores</h2>
+        <ul>
+            {% for score in scores %}
+                <li>{{ score.user.pseudo }}: {{ score.points }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

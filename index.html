@@ -19,7 +19,7 @@
     </nav>
     <section class="hero">
         <div class="container">
-            <h1>Bienvenue dans Mon Jeu !</h1>
+            <h1>Bienvenue dans BattleBoat io !</h1>
             <p>Entrez votre pseudo pour commencer à jouer :</p>
             <form id="nameForm">
                 <input type="text" id="nameInput" name="pseudo" placeholder="Votre pseudo" required>
@@ -29,8 +29,19 @@
     </section>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
+        <div id="chatContainer">
+            <form id="chatForm">
+                <input type="text" id="chatInput" placeholder="Ecrire un message..." required>
+                <button type="submit">Envoyer</button>
+            </form>
+            <div id="chatMessages"></div>
+        </div>
+        <div id="leaderboardContainer">
+            <h2>Classement</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="client.js"></script>
+    <script type="module" src="client.js"></script>
 </body>
 </html>

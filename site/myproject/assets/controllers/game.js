@@ -1,5 +1,5 @@
 // Création du socket
-const socket = io();
+const socket = io('http://localhost:8001');
 
 // Variables pour le jeu
 let player;
@@ -162,6 +162,8 @@ function handleLeaderboard() {
     }
 }
 
-initGame();
-handleChat();
-handleLeaderboard();
+document.addEventListener('DOMContentLoaded', function() {
+    initGame();
+    handleChat();
+    handleLeaderboard();
+});
