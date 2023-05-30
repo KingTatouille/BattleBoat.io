@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 // Création du socket
 const socket = io('http://localhost:8001');
 
@@ -16,6 +18,23 @@ let animationId;
 // Variables pour le dessin
 let canvas;
 let context;
+
+// Variables pour la caméra
+let camera = {x: 0, y: 0};
+
+document.addEventListener('DOMContentLoaded', (e) => {
+    const nameForm = document.getElementById('nameForm');
+    const nameInput = document.getElementById('nameInput');
+    if (nameInput) {
+        e.preventDefault();
+        console.log('Pseudo soumis :', nameInput.value); // Ajout pour le débogage
+        socket.emit('start game', nameInput.value);
+        initGame();
+    } else {
+        console.error('Element with ID "nameInput" not found');
+    }
+});
+
 
 document.addEventListener('keydown', function(e) {
     if (e.code === 'Space') {
@@ -37,18 +56,42 @@ document.addEventListener('keyup', function(e) {
 });
 
 function initGame() {
+    // Initialise le contexte du canvas
+    canvas = document.getElementById('gameCanvas');
+
+    // Taille du canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    context = canvas.getContext('2d');
+    context.fillStyle = 'red';
+    context.fillRect(50, 50, 100, 100);
+
     player = {
-        x: 0,
-        y: 0,
+        x: canvas.width / 2,
+        y: canvas.height / 2,
         width: 50,
         height: 50,
         speed: 5,
-        lives: 100
+        lives: 100,
+        name: nameInput.value // use nameInput.value directly here
     };
 
-    // Initialise le contexte du canvas
-    canvas = document.getElementById('gameCanvas');
-    context = canvas.getContext('2d');
+    enemies.push({
+        x: 100,
+        y: 100,
+        width: 50,
+        height: 50,
+    });
+
+    powerUps.push({
+        x: 200,
+        y: 200,
+        width: 20,
+        height: 20,
+        type: 'someType',
+    });
+    updateGame();
 }
 
 function checkCollision(obj1, obj2) {
@@ -71,6 +114,10 @@ function updateGame() {
     if (keys['ArrowDown']) player.y += player.speed;
     if (keys['ArrowLeft']) player.x -= player.speed;
     if (keys['ArrowRight']) player.x += player.speed;
+
+    // Mettre à jour la position de la caméra
+    camera.x = player.x - canvas.width / 2;
+    camera.y = player.y - canvas.height / 2;
 
     for (let i = 0; i < projectiles.length; i++) {
         if (projectiles[i].direction === 'up') {
@@ -110,6 +157,27 @@ function updateGame() {
 function drawGame() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
+    context.save();
+    context.translate(-camera.x, -camera.y);
+
+    context.fillStyle = 'blue';
+    context.fillRect(player.x, player.y, player.width, player.height);
+
+    context.fillStyle = 'red';
+    for (let i = 0; i < projectiles.length; i++) {
+        context.fillRect(projectiles[i].x, projectiles[i].y, projectiles[i].width, projectiles[i].height);
+    }
+
+    context.fillStyle = 'green';
+    for (let i = 0; i < enemies.length; i++) {
+        context.fillRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height);
+    }
+
+    context.fillStyle = 'yellow';
+    for (let i = 0; i < powerUps.length; i++) {
+        context.fillRect(powerUps[i].x, powerUps[i].y, powerUps[i].width, powerUps[i].height);
+    }
+
     context.fillRect(player.x, player.y, player.width, player.height);
 
     for (let i = 0; i < projectiles.length; i++) {
@@ -123,47 +191,12 @@ function drawGame() {
     for (let i = 0; i < powerUps.length; i++) {
         context.fillRect(powerUps[i].x, powerUps[i].y, powerUps[i].width, powerUps[i].height);
     }
+
+    console.log('Drawing game...');
+    console.log('Player:', player);
+    console.log('Projectiles:', projectiles);
+    console.log('Enemies:', enemies);
+    console.log('PowerUps:', powerUps);
+
+    context.restore();
 }
-
-function handleChat() {
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
-    const chatMessages = document.getElementById('chatMessages');
-
-    chatForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const message = chatInput.value;
-        chatMessages.innerHTML += `<p>${message}</p>`;
-        chatInput.value = '';
-    });
-}
-
-function handleLeaderboard() {
-    let players = [
-        { name: 'Joueur1', score: 20 },
-        { name: 'Joueur2', score: 40 },
-        { name: 'Joueur3', score: 30 },
-    ];
-
-    players.sort(function(a, b) {
-        return b.score - a.score;
-    });
-
-    let leaderboard = document.getElementById('leaderboard');
-
-    while (leaderboard.firstChild) {
-        leaderboard.firstChild.remove();
-    }
-
-    for (let i = 0; i < players.length; i++) {
-        let playerElement = document.createElement('li');
-        playerElement.textContent = players[i].name + ': ' + players[i].score;
-        leaderboard.appendChild(playerElement);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    initGame();
-    handleChat();
-    handleLeaderboard();
-});

@@ -1,9 +1,17 @@
 let express = require('express');
+let cors = require('cors');
 let app = express();
 let http = require('http').Server(app);
-let io = require('socket.io')(http);
+let path = require('path');
+let io = require('socket.io')(http, {
+    cors: {
+        origin: "http://localhost:8000",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
 
-app.use(express.static(__dirname));
+app.use('/socket.io', express.static(path.join(__dirname, 'node_modules', 'socket.io', 'client-dist')));
 
 let players = {};
 
@@ -12,6 +20,7 @@ io.on('connection', function(socket) {
     players[socket.id] = {
         x: 0,
         y: 0,
+        score: 0,
         color: 'hsl(0, 50%, 50%)'
     };
     socket.on('disconnect', function() {
@@ -20,6 +29,14 @@ io.on('connection', function(socket) {
     });
     socket.on('playerMove', function(playerInfo) {
         players[socket.id] = playerInfo;
+    });
+    socket.on('updateScore', function(newScore) {
+        players[socket.id].score = newScore;
+    });
+
+    socket.on('start game', (name) => {
+        console.log('Game started for player:', name); // Should log the player's name
+        // Handle game start logic here...
     });
 });
 

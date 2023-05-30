@@ -1,9 +1,122 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: gainsboro;
+    font-family: Arial, sans-serif;
+    background: #F5F5F5;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: #333;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar .nav-links {
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.hero {
+    background: #007BFF;
+    color: #fff;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+#nameForm {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#nameForm input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+#nameForm button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    color: #007BFF;
+    cursor: pointer;
+}
+
+#gameContainer {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
 }
 
 #gameCanvas {
-    width: 800px;
-    height: 600px;
-    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    display: none;
+    background: #fff;
 }
+
+#chatContainer {
+    width: 300px;
+}
+
+#chatForm {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#chatForm input, #chatForm button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+#chatForm button {
+    background: #007BFF;
+    color: #fff;
+    cursor: pointer;
+}
+
+#chatMessages {
+    height: 200px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+#leaderboardContainer {
+    width: 200px;
+}
+
+#leaderboardContainer h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#leaderboardList {
+    list-style: none;
+}
+

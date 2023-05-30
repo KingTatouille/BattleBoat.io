@@ -1,6 +1,32 @@
 // Création du socket
 const socket = io();
 
+function startGame() {
+    const nameForm = document.getElementById('nameForm');
+    const gameContainer = document.getElementById('gameContainer');
+
+    nameForm.style.display = 'none';
+    gameContainer.style.display = 'block';
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    updateGame();
+}
+
+document.getElementById('startButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const playerName = document.getElementById('nameInput').value;
+    if (playerName.trim() === '') {
+        alert('Veuillez entrer votre pseudo.');
+        return;
+    }
+
+    player.name = playerName;
+    startGame();
+});
+
+
 // Variables pour le jeu
 let player;
 let enemies = [];
@@ -162,6 +188,8 @@ function handleLeaderboard() {
     }
 }
 
-initGame();
-handleChat();
-handleLeaderboard();
+document.addEventListener('DOMContentLoaded', function() {
+    initGame();
+    handleChat();
+    handleLeaderboard();
+});

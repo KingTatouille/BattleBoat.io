@@ -1,22 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Bienvenue à BattleBoat.io !</h1>
-        <p>
-            BattleBoat.io est un jeu passionnant où vous pouvez tester vos compétences en stratégie 
-            contre des joueurs du monde entier. Entrez simplement votre pseudo pour commencer à jouer.
-        </p>
-        <form action="{{ path('game_start') }}" method="post">
-            <input type="text" id="pseudo" name="pseudo" placeholder="Entrer votre pseudo" required>
-            <button type="submit" class="btn btn-primary">Commencer à jouer</button>
-        </form>
-
-        <h2>Meilleurs scores</h2>
-        <ul>
-            {% for score in scores %}
-                <li>{{ score.user.pseudo }}: {{ score.points }}</li>
-            {% endfor %}
-        </ul>
+    <nav>
+        <div class="navbar">
+            <a href="#" class="logo">BattleBoat</a>
+            <ul class="nav-links">
+                <li><a href="#">À propos</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="container">
+            <h1>Bienvenue dans BattleBoat io !</h1>
+            <p>Entrez votre pseudo pour commencer à jouer :</p>
+            <form id="nameForm" method="post" action="{{ path('game_start', {pseudo: "test"}) }}">
+                {{ form_errors(form.pseudo) }}
+                {{ form_widget(form.pseudo) }}
+                <button type="submit" value="submit" id="startButton">Commencer à jouer</button>
+            </form>
+        </div>
+    </section>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="leaderboardContainer">
+            <h2>Classement</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
     </div>
 {% endblock %}
+
+

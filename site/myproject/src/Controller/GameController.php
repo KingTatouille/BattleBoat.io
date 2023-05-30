@@ -2,17 +2,24 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GameController extends AbstractController
 {
-    #[Route('/game', name: 'game_start')]
-    public function index(): Response
+    #[Route('/game/{pseudo}', name: 'game_start')]
+    public function index(string $pseudo): Response
     {
-        return $this->render('game/index.html.twig', [
-            'controller_name' => 'GameController',
+
+        if ($pseudo === null) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->renderView('game/index.html.twig', [
+            'pseudo' => $pseudo,
         ]);
     }
 }
