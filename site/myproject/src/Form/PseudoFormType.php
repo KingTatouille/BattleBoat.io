@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class PseudoFormType extends AbstractType
 {
@@ -13,12 +15,14 @@ class PseudoFormType extends AbstractType
     {
         $builder
             ->add('pseudo', TextType::class, [
-                'label' => 'Votre pseudo',
-                'required' => true,
-                'attr' => [
-                    'id' => 'nameInput',
+                'attr' => ['id' => 'nameInput'],
+                'label' => false,
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 3, 'max' => 50]),
                 ],
-            ]);
+            ])
+        ;
 
     }
 

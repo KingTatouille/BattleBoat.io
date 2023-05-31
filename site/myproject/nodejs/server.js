@@ -3,9 +3,9 @@ let cors = require('cors');
 let app = express();
 let http = require('http').Server(app);
 let path = require('path');
-let io = require('socket.io')(http, {
+io = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:8000",
+        origin: ["http://localhost:8000", "http://127.0.0.1:8000"],
         methods: ["GET", "POST"],
         credentials: true
     }
